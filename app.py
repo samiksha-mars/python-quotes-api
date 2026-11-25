@@ -50,4 +50,6 @@ def http_error(error):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    # Local development server only: bound to localhost with the debugger off.
+    # Use `flask --app app run --debug` for auto-reload and the debugger.
+    app.run(host="127.0.0.1", port=5000)

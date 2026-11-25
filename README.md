@@ -26,9 +26,12 @@ pip install -r requirements.txt
 python3 app.py
 # or
 flask --app app run
+# development mode (auto-reload, interactive debugger)
+flask --app app run --debug
 ```
 
-The API is available at http://localhost:5000.
+The API is available at http://localhost:5000. The server only listens on
+localhost; never expose the debug server on a public network.
 
 ### Example
 
