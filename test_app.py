@@ -34,6 +34,19 @@ class QuotesApiTest(unittest.TestCase):
     def test_quote_not_found(self):
         response = self.client.get("/api/quotes/99999")
         self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.get_json(), {"error": "Quote not found"})
+
+    def test_unknown_route_returns_json(self):
+        for path in ("/api/quotes/abc", "/api/nope"):
+            response = self.client.get(path)
+            self.assertEqual(response.status_code, 404)
+            self.assertIn("error", response.get_json())
+
+    def test_wrong_method_returns_json(self):
+        response = self.client.post("/api/quotes")
+        self.assertEqual(response.status_code, 405)
+        self.assertIn("error", response.get_json())
+        self.assertIn("GET", response.headers["Allow"])
 
 
 if __name__ == "__main__":

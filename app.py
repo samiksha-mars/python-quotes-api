@@ -3,6 +3,7 @@ import random
 from pathlib import Path
 
 from flask import Flask, jsonify
+from werkzeug.exceptions import HTTPException
 
 app = Flask(__name__)
 
@@ -37,6 +38,15 @@ def get_quote(quote_id):
         if quote["id"] == quote_id:
             return jsonify(quote)
     return jsonify({"error": "Quote not found"}), 404
+
+
+@app.errorhandler(HTTPException)
+def http_error(error):
+    """Return errors such as unknown routes (404) or wrong methods (405) as JSON."""
+    response = error.get_response()  # keeps headers such as Allow on a 405
+    response.data = json.dumps({"error": error.description})
+    response.content_type = "application/json"
+    return response
 
 
 if __name__ == "__main__":
